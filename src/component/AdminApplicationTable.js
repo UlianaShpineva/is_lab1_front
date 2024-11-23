@@ -10,14 +10,8 @@ function ApplicationAction({application, onAction}) {
             .then(r => onAction(application)).catch(console.error);
     };
 
-    // const handleDecline = e => {
-    //     request("api/admin/decline", "POST", application)
-    //         .then(r => onAction(application)).catch(console.error);
-    // };
-
     return <div className="">
         <button className="rounded full" onClick={handleAccept}>Approve</button>
-        {/*<button className="rounded full" onClick={handleDecline}>Отклонить</button>*/}
     </div>;
 }
 

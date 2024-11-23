@@ -12,29 +12,25 @@ export async function request(url, method = "GET", body = null) {
     let raw = await fetch(origin + url, {
         method,
         headers,
-        //credentials: 'include',
         body: body ? JSON.stringify(body) : undefined,
     });
     if (!raw.ok) {
-        // Можно вывести сообщение для диагностики
-        const errorText = await raw.text(); // Получаем текст ошибки
-        throw new Error(`HTTP error! Status: ${raw.status}. ${errorText}`);
+        console.log(raw);
+        const errorText = await raw.json();
+        throw new Error(errorText.message);
     }
 
-    // let res = await raw.json();
-    // if (!res.success) console.log(res.message);//throw new Error(res.message);
 
-    // Проверка типа контента, если это не JSON, то не пытаться его парсить
     const contentType = raw.headers.get("Content-Type");
     let res;
     if (contentType && contentType.includes("application/json")) {
-        res = await raw.json(); // Если ответ JSON, парсим как JSON
+        res = await raw.json();
     } else {
-        res = { success: true, message: await raw.text() }; // Если строка, обрабатываем как текст
+        res = { success: true, message: await raw.text() };
     }
 
     if (!res.success) {
-        console.log(res.message); // Логируем сообщение об ошибке
+        console.log(res.message);
     }
 
 
@@ -50,23 +46,6 @@ export function useRequest() {
                 dispatch(updateState({notification: {success: true, message: res.message}}));
             return res;
         } catch (err) {
-            dispatch(updateState({notification: {success: false, message: err.message}}));
-            throw err;
-        }
-    }
-}
-
-export function useRequestText() {
-    const dispatch = useDispatch();
-    return async (...args) => {
-        try {
-            let res = await request(...args);
-            console.log(res);
-            if(res.data)
-                dispatch(updateState({notification: {success: true, message: res.data}}));
-            return res;
-        } catch (err) {
-            console.log("here")
             dispatch(updateState({notification: {success: false, message: err.message}}));
             throw err;
         }

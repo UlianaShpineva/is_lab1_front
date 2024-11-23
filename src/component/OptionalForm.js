@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ButtonCheckbox from "./ButtonCheckbox";
 
 export default function OptionalComponent({
@@ -11,8 +11,8 @@ export default function OptionalComponent({
                                               nullable = false
                                           }) {
     const mapped = values.reduce((acc, item) => {
-        if (item) acc[item.id] = item; // Устанавливаем id как ключ, а остальные поля как значение
-        return acc; // Возвращаем аккумулятор для следующей итерации
+        if (item) acc[item.id] = item;
+        return acc;
     }, {});
     const firstValid = values.find(x => x);
     const [isExistingUsed, setIsExistingUsed] = useState(subSelected);
@@ -20,39 +20,11 @@ export default function OptionalComponent({
     const [value, setValue] = useState(initial || firstValid || {});
 
 
-    // Используем useRef для хранения предыдущего состояния и предотвращения бесконечных циклов
-    // const prevIsNull = useRef(isNull);
-    // const prevIsExistingUsed = useRef(isExistingUsed);
-    //
-    // useEffect(() => {
-    //     // Сравниваем с предыдущими значениями, чтобы избежать бесконечных циклов обновлений
-    //     if (prevIsNull.current !== isNull || prevIsExistingUsed.current !== isExistingUsed) {
-    //         if (isNull) {
-    //             onChange(null);
-    //         } else if (isExistingUsed) {
-    //             onChange(value.id ? value : firstValid);
-    //         } else {
-    //             onChange({ ...value, id: null });
-    //         }
-    //
-    //         prevIsNull.current = isNull;
-    //         prevIsExistingUsed.current = isExistingUsed;
-    //     }
-    // }, [isNull, isExistingUsed, value, firstValid, onChange]);
-
     useEffect(() => {
         if (isNull) onChange(null);
         else if (isExistingUsed) onChange(value.id ? value : firstValid);
         else onChange({...value, id: null});
     }, [isExistingUsed, value, isNull]);
-
-    // useEffect(() => {
-    //     // При смене isNull, если оно снимается, восстанавливаем значение из initial
-    //     if (!isNull && !isExistingUsed) {
-    //         setValue(initial || firstValid || {});
-    //     }
-    // }, [isNull, isExistingUsed, initial, firstValid]);
-
 
     const handleNullChange = () => setIsNull(!isNull);
     const handleCheckboxChange = () => setIsExistingUsed(!isExistingUsed && firstValid);

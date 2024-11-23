@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import InputField, {Type} from "./InputField";
 import OptionalComponent from "./OptionalForm";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {silentRequest, useRequest} from "../Util";
 import PersonForm from "./PersonForm";
 

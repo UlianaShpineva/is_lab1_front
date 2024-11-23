@@ -1,9 +1,6 @@
 import {useAuthorizationCheck, useRequest} from "../Util";
 import React, {useEffect, useState} from "react";
 import MovieRepresentation from "../component/MovieRepresentation";
-import DirectorForm from "../component/PersonForm";
-import PersonForm from "../component/PersonForm";
-import InputField, {Type} from "../component/InputField";
 import {MOVIE_GENRE_VALUES} from "../component/MovieForm";
 
 export default function SpecialPage() {

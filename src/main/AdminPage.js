@@ -1,15 +1,14 @@
 import {useDispatch, useSelector} from "react-redux";
 import AdminApplicationTable from "../component/AdminApplicationTable";
-import {useAuthorizationCheck, useRequest, useRequestText} from "../Util";
+import {useAuthorizationCheck, useRequest} from "../Util";
 import {useEffect} from "react";
-import ChangeHistoryTable from "../component/ChangeHistoryTable";
 import {updateState} from "../store";
 
 export default function AdminPage() {
     const authorizationCheck = useAuthorizationCheck();
     useEffect(authorizationCheck, [authorizationCheck]);
     const logged_as = useSelector(state => state.role);
-    const request = useRequestText();
+    const request = useRequest();
 
     const dispatch = useDispatch();
     const handleApply = () => {
@@ -37,9 +36,5 @@ export default function AdminPage() {
             <p>Requests:</p>
             <AdminApplicationTable/>
         </div>
-        {/*<div className="container">*/}
-        {/*    <p>Последняя история изменений</p>*/}
-        {/*    <ChangeHistoryTable/>*/}
-        {/*</div>*/}
     </div>;
 }

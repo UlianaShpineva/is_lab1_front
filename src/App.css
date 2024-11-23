@@ -1,38 +1,196 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  font-family: sans-serif;
+  color: #c9d1d9;
+  display: block;
+  background-color: #0d1117;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background-color: #21262d;
+  border-radius: 0.2em;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #3a424f;
+  border-radius: 0.2em;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.content {
+  height: fit-content;
+  width: fit-content;
+  box-sizing: border-box;
+
+}
+
+.container {
+  background-color: #161b22;
+  border: 1px solid darkgray;
+  padding: 10px 20px;
+  margin: 5px 7px;
+  height: fit-content;
+  width: fit-content;
+  max-width: 100%;
+  border-radius: 0.6em;
+  text-align: left;
+  display: grid;
+  place-items: center;
+}
+
+table {
+  vertical-align: top;
+  display: table;
+  height: fit-content;
+  width: fit-content;
+  padding: 0;
+  margin: 0;
+}
+
+button:hover, .input:focus {
+  background-color: #30363d;
+  border-color: #8b949e;
+}
+
+button, .box, .table .rdt_TableRow, .table .rdt_TableHeadRow, .table .rdt_Pagination {
+  color: #c9d1d9;
+  background-color: #21262d;
+  padding: 2px 5px;
+  border: 2px solid rgba(240, 246, 252, 0.1);
+}
+
+.padding {
+  padding: 5px 10px;
+}
+
+.margin {
+  margin: 5px 10px;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify {
+  justify-content: space-between;
+  display: flex;
+}
+
+button {
+  cursor: pointer;
+  /*margin: 0 5px;*/
+}
+
+.small-button {
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
+button:active {
+  background-color: #6b6e39;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.rounded {
+  border-radius: 0.4em;
+}
+
+.full {
+  width: 100%;
+}
+
+#header {
+  font-family: cursive;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  color: #d5dfe8;
+  font-size: 15px;
+  width: auto;
+}
+
+.input {
+  margin: 1px 2px;
+  width: 125px;
+  height: 25px;
+}
+
+.form-input {
+  width: fit-content;
+  padding: 2px 5px;
+}
+
+label {
+  margin-bottom: 3px;
+}
+
+.form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin: 0 auto;
 }
 
-.App-link {
-  color: #61dafb;
+.table .rdt_Table {
+  display: block;
+  /*max-width: 400px;*/
+  max-height: 400px;
+  overflow-y: scroll;
+  background-color: transparent;
+  text-align: center;
+}
+.table .rdt_TableRow {
+  padding: 5px 10px;
+  margin: 5px 0;
+  border-radius: 1.2em;
+  horiz-align: center;
+  min-height: 30px;
+  text-align: center;
+}
+/*.table .rdt_TableCell {*/
+/*  text-align: center;*/
+/*  padding: 0 5px;*/
+/*}*/
+.table .rdt_TableHeadRow, .table .rdt_Pagination {
+  background-color: #3a424f;
+  border-radius: 1.2em;
+  padding: 0 10px;
+  min-height: 40px;
+  font-size: 15px;
+  font-weight: bold;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.red-border {
+  border: 2px solid #8c2121;
+  border-radius: 0.4em;
 }
+.small-button.selected, .success {
+  background-color: #43735d;
+}
+.error {
+  background-color: #653b3b;
+}
+
+.notification {
+  position: fixed; /* Фиксированное позиционирование */
+  top: 5px; /* Привязываем к верхней части экрана */
+  left: 50%; /* Центрируем по горизонтали */
+  transform: translateX(-50%); /* Центрируем элемент */
+  z-index: 1000; /* Устанавливаем высокий z-index, чтобы элемент был поверх остальных */
+}
+

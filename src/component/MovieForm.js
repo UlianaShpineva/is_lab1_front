@@ -47,7 +47,7 @@ export default function MovieForm({movie, setMovie, onSubmit, subSelected}) {
     }
 
     const onGenerate = e => {
-        setMovie({...movie, ...getRandomMovie()});
+        setMovie({...movie, ...getTestMovie()});
     }
 
     const request = useRequest();
@@ -150,7 +150,7 @@ export default function MovieForm({movie, setMovie, onSubmit, subSelected}) {
                             values={MOVIE_GENRE_VALUES}/>
                 <div className="justify">
                     <button onClick={beforeMovie} className="rounded full">Create</button>
-                    <button onClick={onGenerate} className="rounded margin">G</button>
+                    {/*<button onClick={onGenerate} className="rounded margin">G</button>*/}
                 </div>
             </div>
         </div>
@@ -161,7 +161,7 @@ function getRandomValue(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-function getRandomMovie() {
+function getTestMovie() {
     return {
         name: "wwwww",
         oscarsCount: 1,
@@ -204,6 +204,3 @@ function getRandomMovie() {
     };
 }
 
-function getRandomString() {
-    return Math.random().toString(36).slice(2)
-}

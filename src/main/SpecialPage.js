@@ -53,10 +53,12 @@ export default function SpecialPage() {
         </div>
         <div className="container">
             <p>Redistribute Oscars from Source Genre to Target Genre</p>
+            <label>Source: </label>
             <select className="input box rounded" name="sourceGenre" value={sourceGenre || ''} onChange={(e) => setSourceGenre(e.target.value)}>
                 <option value={''} key={-1}>Select option</option>
                 {MOVIE_GENRE_VALUES.map((item, i) => <option value={item} key={i}>{item}</option>)}
             </select>
+            <label>Target: </label>
             <select className="input box rounded" name="targetGenre" value={targetGenre || ''} onChange={(e) => setTargetGenre(e.target.value)}>
                 <option value={''} key={-1}>Select option</option>
                 {MOVIE_GENRE_VALUES.map((item, i) => <option value={item} key={i}>{item}</option>)}

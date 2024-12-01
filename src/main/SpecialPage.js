@@ -68,7 +68,7 @@ export default function SpecialPage() {
                 {moviesByTagline.map((movie) => (
                     <li key={movie.id}>{movie.name}</li>
                 ))}
-                {searchFlag && moviesByTagline.length == 0 && <p>nothing found</p>}
+                {searchFlag && moviesByTagline.length === 0 && <p>nothing found</p>}
             </ul>
 
         </div>

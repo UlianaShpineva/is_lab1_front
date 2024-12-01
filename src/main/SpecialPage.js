@@ -2,11 +2,15 @@ import {useAuthorizationCheck, useRequest} from "../Util";
 import React, {useEffect, useState} from "react";
 import MovieRepresentation from "../component/MovieRepresentation";
 import {MOVIE_GENRE_VALUES} from "../component/MovieForm";
+import {useDispatch} from "react-redux";
+import {updateState} from "../store";
 
 export default function SpecialPage() {
+    const dispatch = useDispatch();
     const authorizationCheck = useAuthorizationCheck();
     useEffect(authorizationCheck, [authorizationCheck]);
     const request = useRequest();
+
 
     const [aveUsa, setAveUsa] = useState('-');
     const getAveUsa = () => request('api/movie/average')
@@ -14,18 +18,33 @@ export default function SpecialPage() {
 
     const [taglinePrefix, setTaglinePrefix] = useState("");
     const [moviesByTagline, setMoviesByTagline] = useState([]);
-    const getMoviesByTaglinePrefix = () => request(`api/movie/tagline/${taglinePrefix}`)
-        .then(r => setMoviesByTagline(r));
+    const getMoviesByTaglinePrefix = () => {
+        if (!taglinePrefix) return
+        request(`api/movie/tagline/${taglinePrefix}`)
+            .then(r => setMoviesByTagline(r));
+        setSearchFlag(true);
+    }
 
+    const [searchFlag, setSearchFlag] = useState(false);
     const [sourceGenre, setSourceGenre] = useState("");
     const [targetGenre, setTargetGenre] = useState("");
 
 
-    const redistributeOscars = () => request(`api/movie/redistribute-oscars/${sourceGenre}/${targetGenre}`);
+    const redistributeOscars = () => {
+        if (!sourceGenre || !targetGenre) {
+            dispatch(updateState({notification: {success: false, message: "Select genres"}}));
+            return
+        }
+        request(`api/movie/redistribute-oscars/${sourceGenre}/${targetGenre}`);
+        dispatch(updateState({notification: {success: true, message: "Oscars redistributed successfully"}}));
+    }
 
 
     const [length, setLength] = useState(0);
-    const addOscarsToLongMovies = () => request(`api/movie/add-oscars/${length}`);
+    const addOscarsToLongMovies = () => {
+        request(`api/movie/add-oscars/${length}`);
+        dispatch(updateState({notification: {success: true, message: "Oscars added successfully"}}));
+    }
 
     const [maxDirector, setMaxDirector] = useState();
     const getMaxDirector = () => request('api/movie/max-director')
@@ -49,7 +68,9 @@ export default function SpecialPage() {
                 {moviesByTagline.map((movie) => (
                     <li key={movie.id}>{movie.name}</li>
                 ))}
+                {searchFlag && moviesByTagline.length == 0 && <p>nothing found</p>}
             </ul>
+
         </div>
         <div className="container">
             <p>Redistribute Oscars from Source Genre to Target Genre</p>

@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import InputField, {Type} from "./InputField";
 import OptionalComponent from "./OptionalForm";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {silentRequest, useRequest} from "../Util";
 import PersonForm from "./PersonForm";
+import {updateState} from "../store";
 
 export const COLOR_VALUES = ["GREEN", "BLACK", "BLUE", "YELLOW", "BROWN"];
 export const COUNTRY_VALUES = ["RUSSIA", "UNITED_KINGDOM", "GERMANY", "NORTH_KOREA", "JAPAN"];
@@ -32,11 +33,10 @@ export default function MovieForm({movie, setMovie, onSubmit, subSelected}) {
         setMovie(prevMovie => {
             let updatedMovie = {...prevMovie};
             keys.forEach((key, index) => {
-                // Если это последний ключ, устанавливаем значение
                 if (index === keys.length - 1) {
-                    updatedMovie[key] = value; // Устанавливаем значение для последнего ключа
+                    updatedMovie[key] = value;
                 } else {
-                    updatedMovie = updatedMovie[key] || {}; // Переходим на уровень ниже
+                    updatedMovie = updatedMovie[key] || {};
                 }
             });
             return keys.length > 1 ? {...prevMovie} : updatedMovie;
@@ -49,6 +49,62 @@ export default function MovieForm({movie, setMovie, onSubmit, subSelected}) {
     const onGenerate = e => {
         setMovie({...movie, ...getTestMovie()});
     }
+
+    const validateForm = (movie) => {
+        const validations = [
+            movie.name != null && movie.name.length > 0,
+            movie.coordinates?.x != null && movie.coordinates.x <= 953,
+            movie.coordinates?.y == null || movie.coordinates.y >= -955,
+            movie.oscarsCount != null && movie.oscarsCount > 0,
+            movie.budget > 0,
+            movie.totalBoxOffice > 0,
+            movie.genre == null || MOVIE_GENRE_VALUES.includes(movie.genre),
+            movie.mpaaRating == null || MPA_RATING_VALUES.includes(movie.mpaaRating),
+            movie.tagline && movie.tagline.length <= 143,
+            movie.length > 0,
+            movie.goldenPalmCount == null || movie.goldenPalmCount > 0,
+            movie.usaBoxOffice != null && movie.usaBoxOffice > 0,
+        ];
+
+        validations.push(validatePerson(movie.director));
+        if (movie.screenwriter != null) validations.push(validatePerson(movie.screenwriter));
+        if (movie.operator != null) validations.push(validatePerson(movie.operator));
+
+        return validations.every(Boolean);
+    };
+
+    const validatePerson = (person) => {
+        if (!person) return false;
+
+        const validations = [
+            person.name && person.name.length > 0,
+            COLOR_VALUES.includes(person.eyeColor),
+            person.hairColor == null || COLOR_VALUES.includes(person.hairColor),
+            person.weight != null && person.weight > 0,
+            COUNTRY_VALUES.includes(person.nationality),
+        ];
+
+        if (person.location) {
+            validations.push(
+                person.location.x != null,
+                person.location.y != null,
+                person.location.name != null && person.location.name.length <= 392
+            );
+        }
+
+        return validations.every(Boolean);
+    };
+
+    const dispatch = useDispatch();
+    const handleSubmit = (e) => {
+
+        e.preventDefault();
+        if (!validateForm(movie)) {
+            dispatch(updateState({notification: {success: false, message: "Fill in all required fields!"}}));
+            return;
+        }
+        beforeMovie();
+    };
 
     const request = useRequest();
     const beforeMovie = async e => {
@@ -149,7 +205,7 @@ export default function MovieForm({movie, setMovie, onSubmit, subSelected}) {
                 <InputField type={Type.Enum} name="genre" object={movie} onChange={handleChange}
                             values={MOVIE_GENRE_VALUES}/>
                 <div className="justify">
-                    <button onClick={beforeMovie} className="rounded full">Create</button>
+                    <button onClick={handleSubmit} className="rounded full">Create</button>
                     {/*<button onClick={onGenerate} className="rounded margin">G</button>*/}
                 </div>
             </div>

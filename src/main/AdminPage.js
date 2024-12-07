@@ -1,5 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import AdminApplicationTable from "../component/AdminApplicationTable";
+import HistoryTable from "../component/HistoryTable";
 import {useAuthorizationCheck, useRequest} from "../Util";
 import {useEffect} from "react";
 import {updateState} from "../store";
@@ -35,6 +36,10 @@ export default function AdminPage() {
         <div className="container">
             <p>Requests:</p>
             <AdminApplicationTable/>
+        </div>
+        <div className="container">
+            <p>History:</p>
+            <HistoryTable/>
         </div>
     </div>;
 }
